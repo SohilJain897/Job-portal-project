@@ -110,7 +110,7 @@ app.get("/my-applications/:user_id", async (req, res) => {
     const user_id = req.params.user_id;
 
     const result = await pool.query(
-      `SELECT jobs.company, jobs.role, applications.status
+      `SELECT jobs.id,jobs.company, jobs.role, applications.status
        FROM applications
        JOIN jobs ON applications.job_id = jobs.id
        WHERE applications.user_id = $1`,
