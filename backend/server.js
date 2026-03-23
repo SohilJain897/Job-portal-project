@@ -127,10 +127,43 @@ app.get("/my-applications/:user_id", async (req, res) => {
 
 
 
+/////////////////-------------------------LOGIN------------------------////////////
+
+app.post("/login", async (req,res) => {
+    try{
+        const{email,password} = req.body;
+        const result = await pool.query(
+            "Select * from users where email =$1 and password =$2",
+            [email,password]
+        );
+
+        if(result.rows.length === 0)
+        {
+            return res.status(400).send("Invalid credentials");
+        }
+        res.json(result.rows[0]);
+
+    }
+
+    catch(err){
+        console.log(err);
+        res.status(500).send("Login error");
+    }
+});
 
 
+///////-------------------------to get all the applicatins on admin dashboard-------------
 
+app.get("/all-applications", async (req, res) => {
+  const result = await pool.query(`
+    SELECT applications.id, users.name, jobs.company, jobs.role, applications.status
+    FROM applications
+    JOIN users ON applications.user_id = users.id
+    JOIN jobs ON applications.job_id = jobs.id
+  `);
 
+  res.json(result.rows);
+});
 
 
 

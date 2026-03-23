@@ -56,13 +56,14 @@ function JobList() {
     return (
 
         <div className="container">
-            <h1>Job List </h1>
+           <h1 className="heading">🔥 Job Opportunities</h1>
 
 
 
 
             <div className="grid">
-                {jobs.map(job => (
+                {jobs.filter(job => !appliedJobs.includes(job.id))
+                .map(job => (
                     <div key={job.id} className="card">
                         <h3>{job.company}</h3>
                         <p><strong>Role:</strong> {job.role}</p>
